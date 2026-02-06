@@ -182,7 +182,6 @@ class ConfigTest extends DbTestCase
 
     /**
      * #dataProvider configUpdateProvider
-     * #CoversMethod GlpiPlugin\Carbon\Config::configUpdate
      *
      * @param array $input
      * @param array $expected
@@ -196,8 +195,6 @@ class ConfigTest extends DbTestCase
     }
 
     /**
-     * #CoversMethod GlpiPlugin\Carbon\Config::isDemoMode
-     *
      * @return void
      */
     public function testIsDemoMode()
@@ -230,8 +227,6 @@ class ConfigTest extends DbTestCase
     }
 
     /**
-     * #CoversMethod GlpiPlugin\Carbon\Config::getGeocoder
-     *
      * @return void
      */
     public function testGetGeocoder()

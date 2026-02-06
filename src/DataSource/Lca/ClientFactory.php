@@ -97,7 +97,7 @@ class ClientFactory
     /**
      * Get name of clients
      *
-     * @return array
+     * @return array<string, string>
      */
     public static function getClientNames(): array
     {
@@ -105,8 +105,9 @@ class ClientFactory
         $types = self::getClientTypes();
         $api_client = new RestApiClient();
         foreach ($types as $type) {
-            $data_source_client = new $type($api_client);
-            $names[$type] = $data_source_client->getSourceName();
+            $namespace = explode('\\', $type);
+            $key = array_splice($namespace, -2, 1)[0];
+            $names[$key] = $type::getSourceName();
         }
 
         return $names;

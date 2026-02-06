@@ -41,8 +41,6 @@ use Symfony\Component\DomCrawler\Crawler;
 class ReportTest extends DbTestCase
 {
     /**
-     * #CoversMethod GlpiPlugin\Carbon\Report::getTypeName
-     *
      * @return void
      */
     public function testGetTypeName()
@@ -55,8 +53,6 @@ class ReportTest extends DbTestCase
     }
 
     /**
-     * #CoversMethod GlpiPlugin\Carbon\Report::getIcon
-     *
      * @return void
      */
     public function testGetIcon()
@@ -66,8 +62,6 @@ class ReportTest extends DbTestCase
     }
 
     /**
-     * #CoversMethod GlpiPlugin\Carbon\Report::getMenuContent
-     *
      * @return void
      */
     public function testGetMenuContent()
@@ -80,8 +74,6 @@ class ReportTest extends DbTestCase
     }
 
     /**
-     * #CoversMethod GlpiPlugin\Carbon\Report::showInstantReport
-     *
      * @return void
      */
     public function testShowInstantReport()

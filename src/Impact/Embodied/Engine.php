@@ -38,6 +38,7 @@ use DBmysql;
 use GlpiPlugin\Carbon\AbstractModel;
 use GlpiPlugin\Carbon\Config;
 use GlpiPlugin\Carbon\DataSource\Lca\Boaviztapi\Client;
+use GlpiPlugin\Carbon\DataSource\Lca\ClientFactory;
 use GlpiPlugin\Carbon\DataSource\RestApiClient;
 use GlpiPlugin\Carbon\DataTracking\AbstractTracked;
 use GlpiPlugin\Carbon\Impact\Embodied\Boavizta\AbstractAsset;
@@ -46,14 +47,15 @@ use RuntimeException;
 
 class Engine extends CommonGLPI
 {
+    /**
+     * @deprecated 1.2.0
+     * Get LCA client names
+     *
+     * @return array
+     */
     public static function getAvailableBackends(): array
     {
-        return [
-            // 'Internal' => __('Internal', 'carbon'),
-            'Boavizta' => __('Boavizta', 'carbon'),
-            // 'NumEcoVal' => __('NumEcoVal', 'carbon'),
-            // 'Resilio' => __('Resilio', 'carbon'),
-        ];
+        return ClientFactory::getClientNames();
     }
 
     /**

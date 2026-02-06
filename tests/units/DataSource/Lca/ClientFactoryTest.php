@@ -32,6 +32,7 @@
 
 namespace GlpiPlugin\Carbon\DataSource\Lca;
 
+use GlpiPlugin\Carbon\DataSource\Lca\ClientFactory;
 use GlpiPlugin\Carbon\Tests\DbTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 
@@ -43,6 +44,7 @@ class ClientFactoryTest extends DbTestCase
         $result = ClientFactory::getClientTypes();
         $expected = [
             'Boaviztapi' => 'GlpiPlugin\\Carbon\\DataSource\\Lca\\Boaviztapi\\Client',
+            'Resilio'    => 'GlpiPlugin\Carbon\DataSource\Lca\Resilio\Client',
         ];
         $this->assertSame($expected, $result);
     }
@@ -52,6 +54,7 @@ class ClientFactoryTest extends DbTestCase
         $result = ClientFactory::getConfigTypes();
         $expected = [
             'Boaviztapi' => 'GlpiPlugin\\Carbon\\DataSource\\Lca\\Boaviztapi\\Config',
+            'Resilio'    => 'GlpiPlugin\Carbon\DataSource\Lca\Resilio\Config',
         ];
         $this->assertSame($expected, $result);
     }
@@ -61,6 +64,17 @@ class ClientFactoryTest extends DbTestCase
         // This tests takes into account the available data sources
         $result = ClientFactory::getSecuredConfigs();
         $expected = [];
+        $this->assertSame($expected, $result);
+    }
+
+    public function testGetClientNames()
+    {
+        // This tests takes into account the available data sources
+        $result = ClientFactory::getClientNames();
+        $expected = [
+            'Boaviztapi' => 'Boaviztapi',
+            'Resilio'    => 'Resilio',
+        ];
         $this->assertSame($expected, $result);
     }
 }

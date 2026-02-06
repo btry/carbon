@@ -32,13 +32,16 @@
 
 namespace GlpiPlugin\Carbon\DataSource;
 
+use GlpiPlugin\Carbon\DataSource\CarbonIntensity\Rte\CronTask as RteCronTask;
+use GlpiPlugin\Carbon\DataSource\CarbonIntensity\ElectricityMaps\CronTask as ElectricityMapsCronTask;
 use GlpiPlugin\Carbon\Tests\CommonTestCase;
+use GlpiPlugin\Carbon\Tests\DbTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 require_once dirname(__DIR__, 2) . '/fixtures/FakeDataSources.php';
 
 #[CoversClass(CronTaskProvider::class)]
-class CronTaskProviderTest extends CommonTestCase
+class CronTaskProviderTest extends DbTestCase
 {
     public function test_getCronTaskTypes_returns_()
     {

@@ -43,8 +43,6 @@ use Symfony\Component\DomCrawler\Crawler;
 class ComputerUsageProfileTest extends DbTestCase
 {
     /**
-     * #CoversMethod GlpiPlugin\Carbon\ComputerUsageProfile::canView
-     *
      * @return void
      */
     public function testCanView()
@@ -59,9 +57,6 @@ class ComputerUsageProfileTest extends DbTestCase
     }
 
     /**
-     * #CoversMethod GlpiPlugin\Carbon\ComputerUsageProfile::prepareInputForAdd
-     * #CoversMethod GlpiPlugin\Carbon\ComputerUsageProfile::inputIntegrityCheck
-     *
      * @return void
      */
     public function testPrepareInputForAdd()
@@ -110,9 +105,6 @@ class ComputerUsageProfileTest extends DbTestCase
     }
 
     /**
-     * #CoversMethod GlpiPlugin\Carbon\ComputerUsageProfile::prepareInputForUpdate
-     * #CoversMethod GlpiPlugin\Carbon\ComputerUsageProfile::inputIntegrityCheck
-     *
      * @return void
      */
     public function testPrepareInputForUpdate()
@@ -152,8 +144,6 @@ class ComputerUsageProfileTest extends DbTestCase
     }
 
     /**
-     * #CoversMethod GlpiPlugin\Carbon\ComputerUsageProfile::assignToItem
-     *
      * @return void
      */
     public function testAssignToItem()

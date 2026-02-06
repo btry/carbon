@@ -32,4 +32,18 @@
 
 namespace GlpiPlugin\Carbon\DataSource\Lca;
 
-abstract class AbstractClient implements ClientInterface {}
+abstract class AbstractClient implements ClientInterface
+{
+    protected string $base_url;
+    protected static string $source_name = '';
+
+    public static function getSourceName(): string
+    {
+        return static::$source_name;
+    }
+
+    public function setBaseUrl(string $base_url)
+    {
+        $this->base_url = $base_url;
+    }
+}

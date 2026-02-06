@@ -61,6 +61,14 @@ class ComputerTypeTest extends AbstractTypeTest
         $this->assertEquals('Carbon', $crawler->text());
     }
 
+    public function testGetOrCreate()
+    {
+        $computer_type = $this->createItem(GlpiComputerType::class, ['name' => 'Test Computer Type']);
+        $instance = new ComputerType();
+        $this->callPrivateMethod($instance, 'getOrCreate', $computer_type);
+        $this->assertFalse($instance->isNewItem());
+    }
+
     public function testShowForItemType()
     {
         $glpi_type = $this->createItem(static::$glpi_type_itemtype);

@@ -43,9 +43,6 @@ use Session;
 #[CoversClass(Source::class)]
 class SourceTest extends DbTestCase
 {
-    /**
-     * #CoversMethod \GlpiPlugin\Carbon\Source::getTypeName
-     */
     public function testGetTypeName()
     {
         $result = Source::getTypeName(1);
@@ -55,9 +52,6 @@ class SourceTest extends DbTestCase
         $this->assertEquals('Carbon intensity sources', $result);
     }
 
-    /**
-     * #CoversMethod \GlpiPlugin\Carbon\Source::canCreate
-     */
     public function testCanCreate()
     {
         $this->login('glpi', 'glpi');
@@ -65,9 +59,6 @@ class SourceTest extends DbTestCase
         $this->assertFalse($result);
     }
 
-    /**
-     * #CoversMethod \GlpiPlugin\Carbon\Source::canUpdate
-     */
     public function testCanUpdate()
     {
         $this->login('glpi', 'glpi');
@@ -75,9 +66,6 @@ class SourceTest extends DbTestCase
         $this->assertFalse($result);
     }
 
-    /**
-     * #CoversMethod \GlpiPlugin\Carbon\Source::canDelete
-     */
     public function testCanDelete()
     {
         $this->login('glpi', 'glpi');
@@ -85,9 +73,6 @@ class SourceTest extends DbTestCase
         $this->assertFalse($result);
     }
 
-    /**
-     * #CoversMethod \GlpiPlugin\Carbon\Source::canPurge
-     */
     public function testCanPurge()
     {
         $this->login('glpi', 'glpi');
@@ -95,9 +80,6 @@ class SourceTest extends DbTestCase
         $this->assertFalse($result);
     }
 
-    /**
-     * #CoversMethod \GlpiPlugin\Carbon\Source::defineTabs
-     */
     public function testDefineTabs()
     {
         $this->login('glpi', 'glpi');
@@ -127,9 +109,6 @@ class SourceTest extends DbTestCase
         $this->assertEquals($expected, $result);
     }
 
-    /**
-     * #CoversMethod \GlpiPlugin\Carbon\Source::displayTabContentForItem
-     */
     public function testDisplayTabContentForItem()
     {
         $this->login('glpi', 'glpi');

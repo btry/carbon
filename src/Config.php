@@ -42,8 +42,8 @@ use Geocoder\StatefulGeocoder;
 use Glpi\Application\View\TemplateRenderer;
 use GLPINetwork;
 use GlpiPlugin\Carbon\DataSource\CarbonIntensity\ClientFactory as CarbonIntensityClientFactory;
+use GlpiPlugin\Carbon\DataSource\Lca\Boaviztapi\Config as BoaviztapiConfig;
 use GlpiPlugin\Carbon\DataSource\Lca\ClientFactory as LcaClientFactory;
-use GlpiPlugin\Carbon\Impact\Embodied\Engine;
 use GuzzleHttp\Client;
 use Html;
 use Monitor as GlpiMonitor;
@@ -56,11 +56,6 @@ use function Safe\json_encode;
 
 class Config extends GlpiConfig
 {
-    /**
-     * Environment variable name to set the boaviztapi base URL
-     * If set, overrides the setting in the database
-     */
-    public const ENV_BOAVIZTAPI_BASE_URL = 'GLPI_PLUGIN_CARBON_BOAVIZTAPI_BASE_URL';
     private const CONFIG_CONTEXT = 'plugin:carbon';
 
     #[Override]
@@ -112,7 +107,7 @@ class Config extends GlpiConfig
         global $CFG_GLPI;
 
         $current_config = GlpiConfig::getConfigurationValues(self::CONFIG_CONTEXT);
-        $current_config['geocoding_enabled'] ??= '0';
+        // $current_config['geocoding_enabled'] ??= '0';
         $canedit        = Session::haveRight(Config::$rightname, UPDATE);
 
         // Get config template foreach LCA data source
@@ -136,6 +131,7 @@ class Config extends GlpiConfig
         $usage_impact_action_url    = 'submitGetLink("' . $CFG_GLPI['root_doc'] . '/plugins/carbon/front/usageimpact.form.php", ' . $reset_args . ')';
         $embodied_impact_action_url = 'submitGetLink("' . $CFG_GLPI['root_doc'] . '/plugins/carbon/front/embodiedimpact.form.php", ' . $reset_args . ')';
 
+        $hide_boaviztapi_base_url = (getenv(BoaviztapiConfig::ENV_BOAVIZTAPI_BASE_URL) !== false);
         $renderer = TemplateRenderer::getInstance();
         $environment = $renderer->getEnvironment();
         if (!$environment->hasExtension(StringLoaderExtension::class)) {
@@ -143,12 +139,13 @@ class Config extends GlpiConfig
         }
         $confirm_message = __('This action cannot be undone. Are you sure?', 'carbon');
         $renderer->display('@carbon/config.html.twig', [
-            'can_edit'                   => $canedit,
+            'can_edit'                 => $canedit,
             'context'                    => self::CONFIG_CONTEXT,
-            'current_config'             => $current_config,
-            'impact_engines'             => Engine::getAvailableBackends(),
-            'include_configs'            => $include_configs,
-            'action'                     => (isset($options['plugin_config']) ? Config::getFormURL() : GlpiConfig::getFormURL()),
+            'current_config'           => $current_config,
+            'impact_engines'           => LcaClientFactory::getClientNames(),
+            'include_configs'          => $include_configs,
+            'hide_boaviztapi_base_url' => $hide_boaviztapi_base_url,
+            'action'                   => (isset($options['plugin_config']) ? Config::getFormURL() : GlpiConfig::getFormURL()),
             'usage_impact_action_url'    => Html::getConfirmationOnActionScript($confirm_message, $usage_impact_action_url),
             'embodied_impact_action_url' => Html::getConfirmationOnActionScript($confirm_message, $embodied_impact_action_url),
         ]);

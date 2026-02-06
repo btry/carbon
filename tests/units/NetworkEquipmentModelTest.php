@@ -35,11 +35,31 @@ namespace GlpiPlugin\Carbon\Tests;
 use GlpiPlugin\Carbon\NetworkEquipmentModel;
 use NetworkEquipmentModel as GlpiNetworkEquipmentModel;
 use PHPUnit\Framework\Attributes\CoversClass;
+use Symfony\Component\DomCrawler\Crawler;
 
 #[CoversClass(NetworkEquipmentModel::class)]
 class NetworkEquipmentModelTest extends AbstractModelTest
 {
     protected static string $glpi_model_itemtype = GlpiNetworkEquipmentModel::class;
-
     protected static string $model_itemtype = NetworkEquipmentModel::class;
+
+    public function testShowForItemType()
+    {
+        $glpi_networkequipment_model = $this->createItem(GlpiNetworkEquipmentModel::class);
+        $networkequipment_model = $this->createItem(NetworkEquipmentModel::class, [
+            'networkequipmentmodels_id' => $glpi_networkequipment_model->getID(),
+        ]);
+        $this->login('glpi', 'glpi');
+        ob_start();
+        $networkequipment_model->showForItemType($glpi_networkequipment_model);
+        $output = ob_get_clean();
+        $crawler = new Crawler($output);
+        $gwp = $crawler->filter('input[name="gwp"]');
+        $this->assertEquals(1, $gwp->count());
+        $gwp->each(function (Crawler $node) {
+            $this->assertEquals(0, $node->attr('value'));
+            $this->assertEquals('number', $node->attr('type'));
+        });
+    }
+
 }

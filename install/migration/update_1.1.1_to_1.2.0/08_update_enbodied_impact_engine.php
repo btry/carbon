@@ -30,22 +30,10 @@
  * -------------------------------------------------------------------------
  */
 
-namespace GlpiPlugin\Carbon\DataSource\Lca;
+use Config as GLpiConfig;
+use GlpiPlugin\Carbon\Config;
 
-/**
- * The common interface for all classes implementing Life Cycle Assessment fetching from various sources.
- * Sources are most of the time REST API, but this is not limitative.
- *
- * Depending on the source, the time range of the intensities may vary.
- *
- */
-
-interface ClientInterface
-{
-    /**
-     * Get the source name of the data source
-     *
-     * @return string
-     */
-    public static function getSourceName(): string;
+$enbodied_engine = Config::getPluginConfigurationValue('impact_engine');
+if ($embodied_engine === 'Boavizta') {
+    Config::setPluginConfigurationValues(['impact_engine' => 'Boaviztapi']);
 }

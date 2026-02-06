@@ -55,8 +55,7 @@ class Client extends AbstractClient
 {
     private RestApiClientInterface $client;
 
-    private string $base_url;
-    private static string $source_name = 'Boaviztapi';
+    protected static string $source_name = 'Boaviztapi';
 
     /** @var array Supported impact criterias and the multiplier unit of the value returned by Boaviztapi */
     protected array $criteria_units = [
@@ -87,21 +86,10 @@ class Client extends AbstractClient
     public function __construct(RestApiClientInterface $client, string $url = '')
     {
         $this->client = $client;
-        if (!empty($url)) {
-            $this->base_url = $url;
-        } else {
-            $url = CarbonConfig::getPluginConfigurationValue('boaviztapi_base_url');
-            if (!is_string($url) || $url === '') {
-                throw new RuntimeException('Invalid Boaviztapi base URL');
-            }
-            $this->base_url = $url;
+        if (empty($url)) {
+            $url = Config::getConfigurationValue('boaviztapi_base_url');
         }
-    }
-
-    #[Override]
-    public function getSourceName(): string
-    {
-        return self::$source_name;
+        $this->setBaseUrl($url);
     }
 
     public function post(string $endpoint, array $options = []): array

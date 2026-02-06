@@ -44,24 +44,28 @@ class ComputerType extends AbstractChildDropdown
     public static string $itemtype = GlpiComputerType::class;
     public static string $items_id = 'computertypes_id';
 
-    public const CATEGORY_UNDEFINED  = 0;
-    public const CATEGORY_DESKTOP    = 1;
-    public const CATEGORY_SERVER     = 2;
-    public const CATEGORY_LAPTOP     = 3;
-    public const CATEGORY_TABLET     = 4;
-    public const CATEGORY_SMARTPHONE = 5;
-    public const CATEGORY_CLOUD      = 6;
+    public const CATEGORY_UNDEFINED    = 0;
+    public const CATEGORY_DESKTOP      = 1;
+    public const CATEGORY_SERVER       = 2;
+    public const CATEGORY_LAPTOP       = 3;
+    public const CATEGORY_TABLET       = 4;
+    public const CATEGORY_SMARTPHONE   = 5;
+    public const CATEGORY_CLOUD        = 6;
+    public const CATEGORY_SERVER_RACK  = 7;
+    public const CATEGORY_SERVER_BLADE = 8;
 
     public static function getCategories(): array
     {
         return [
-            self::CATEGORY_UNDEFINED  => __('Unspecified', 'carbon'),
-            self::CATEGORY_DESKTOP    => _n('Computer', 'Computers', 1),
-            self::CATEGORY_SERVER     => __('Server', 'carbon'),
-            self::CATEGORY_LAPTOP     => __('Laptop', 'carbon'),
-            self::CATEGORY_TABLET     => __('Tablet', 'carbon'),
-            self::CATEGORY_SMARTPHONE => __('Smartphone', 'carbon'),
-            self::CATEGORY_CLOUD      => __('Cloud server', 'carbon'),
+            self::CATEGORY_UNDEFINED    => __('Unspecified', 'carbon'),
+            self::CATEGORY_DESKTOP      => __('Desktop', 'carbon'),
+            self::CATEGORY_SERVER       => __('Server', 'carbon'),
+            self::CATEGORY_LAPTOP       => __('Laptop', 'carbon'),
+            self::CATEGORY_TABLET       => __('Tablet', 'carbon'),
+            self::CATEGORY_SMARTPHONE   => __('Smartphone', 'carbon'),
+            self::CATEGORY_CLOUD        => __('Cloud server', 'carbon'),
+            self::CATEGORY_SERVER_RACK  => __('Rack server', 'carbon'),
+            self::CATEGORY_SERVER_BLADE => __('Blade server', 'carbon'),
         ];
     }
 

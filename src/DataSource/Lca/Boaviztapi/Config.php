@@ -100,7 +100,7 @@ TWIG;
     public function configUpdate(array $input): array
     {
         if (isset($input['boaviztapi_base_url']) && (string) $input['boaviztapi_base_url'] !== '') {
-            $old_url = PluginConfig::getPluginConfigurationValue('boaviztapi_base_url');
+            $old_url = self::getConfigurationValue('boaviztapi_base_url');
             if ($old_url != $input['boaviztapi_base_url']) {
                 if (!$this->validateBaseUrl($input['boaviztapi_base_url'])) {
                     unset($input['boaviztapi_base_url']);

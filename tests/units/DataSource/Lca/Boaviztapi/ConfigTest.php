@@ -60,7 +60,6 @@ class ConfigTest extends DbTestCase
         ];
         $this->login('glpi', 'glpi');
         $instance = new Config();
-
         $result = $instance->getConfigTemplate();
         $renderer = TemplateRenderer::getInstance();
         if (!$renderer->getEnvironment()->hasExtension(StringLoaderExtension::class)) {
