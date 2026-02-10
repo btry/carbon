@@ -205,10 +205,9 @@ class CronTask extends CommonGLPI
     public static function cronEmbodiedImpact(GlpiCronTask $task): int
     {
         $count = 0;
-        $embodied_impacts = Toolbox::getEmbodiedImpactClasses();
         $task->setVolume(0); // start with zero
         $remaining = $task->fields['param'];
-        $limit_per_type = max(1, floor(($remaining) / count($embodied_impacts)));
+        $limit_per_type = max(1, floor(($remaining) / count(PLUGIN_CARBON_TYPES)));
 
         /**
          * Huge quantity of SQL queries will be executed
