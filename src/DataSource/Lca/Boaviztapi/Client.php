@@ -48,6 +48,9 @@ use Session;
 
 use function Safe\json_encode;
 
+/**
+ * API documentation https://api.boavizta.org/docs
+ */
 class Client extends AbstractClient
 {
     private RestApiClientInterface $client;
