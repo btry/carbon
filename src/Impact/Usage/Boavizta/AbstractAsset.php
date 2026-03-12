@@ -215,44 +215,4 @@ abstract class AbstractAsset extends AbstractUsageImpact implements AssetInterfa
 
         return $value;
     }
-
-    /**
-     * Get the zone code the asset belongs to
-     * Location's country must match a zone name
-     *
-     * @param  CommonDBTM $item
-     * @param  DateTime $date Date for which the zone must be found
-     * @return string|null
-     */
-    protected function getZoneCode(CommonDBTM $item, ?DateTime $date = null): ?string
-    {
-        // TODO: use date to find where was the asset at the given date
-        if ($date === null) {
-            $item_table = (new DbUtils())->getTableForItemType(static::$itemtype);
-            $glpi_location_table = GlpiLocation::getTable();
-            $location_table = Location::getTable();
-            $location = new Location();
-            $found = $location->getFromDBByRequest([
-                'INNER JOIN' => [
-                    $glpi_location_table => [
-                        'FKEY' => [
-                            $location_table => 'locations_id',
-                            $glpi_location_table => 'id',
-                        ],
-                    ],
-                ],
-                'WHERE' => [
-                    GlpiLocation::getTableField('id') => $item->fields['locations_id'],
-                ],
-            ]);
-
-            if ($found === false) {
-                return null;
-            }
-
-            return $location->fields['boavizta_zone'];
-        }
-
-        throw new \LogicException('Not implemented yet');
-    }
 }
