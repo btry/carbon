@@ -148,6 +148,39 @@ class Type
     }
 
     /**
+     * Get the explanation of the unit for an impact type
+     *
+     * @param string $type impact type name
+     * @return string
+     **/
+    public static function getUnitExplanation(string $type): string
+    {
+        return match ($type) {
+            'gwp'    => _('grams of CO₂ equivalent, where all gases are normalized to CO₂\'s warming effect over a 100-year timeframe.', 'carbon'),
+            'adp'    => _('grams of Antimony equivalent, using Antimony as a reference for resource scarcity.', 'carbon'),
+            'pe'     => _('Joules, with no equivalent specified.', 'carbon'),
+            'gwppb'  => _('grams of CO₂ equivalent.', 'carbon'),
+            'gwppf'  => _('grams of CO₂ equivalent.', 'carbon'),
+            'gwpplu' => _('grams of CO₂ equivalent.', 'carbon'),
+            'ir'     => _('grams of Uranium-235 equivalent, normalizing radiation to U235\'s ionizing potential.', 'carbon'),
+            'lu'     => _('No unit defined.', 'carbon'),
+            'odp'    => _('grams of CFC-11 equivalent, using CFC-11 as a reference for ozone-destroying capacity.', 'carbon'),
+            'pm'     => _('No unit defined.', 'carbon'),
+            'pocp'   => _('grams of Uranium-235 equivalent.', 'carbon'),
+            'wu'     => _('cubic meters, with no equivalent specified.', 'carbon'),
+            'mips'   => _('grams, with no equivalent specified.', 'carbon'),
+            'adpe'   => _('grams of Antimony equivalent.', 'carbon'),
+            'adpf'   => _('Joules, with no equivalent specified.', 'carbon'),
+            'ap'     => _('moles of H+ equivalent, normalizing to hydrogen ion concentration.', 'carbon'),
+            'ctue'   => _('No unit defined.', 'carbon'),
+            'epf'    => _('grams of Phosphorus equivalent.', 'carbon'),
+            'epm'    => _('grams of Nitrogen equivalent.', 'carbon'),
+            'ept'    => _('moles of Nitrogen equivalent.', 'carbon'),
+            default  => '',
+        };
+    }
+
+    /**
      * Get the unit of an impact type
      *
      * @param string $type impact type name
