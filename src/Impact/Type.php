@@ -33,6 +33,8 @@
 
 namespace GlpiPlugin\Carbon\Impact;
 
+use Dropdown;
+
 class Type
 {
     private const BASE_URL = 'https://glpi-plugins.readthedocs.io/%s/latest/carbon';
@@ -400,5 +402,11 @@ class Type
         }
 
         return '';
+    }
+
+    public static function Dropdown(string $name, array $options = [])
+    {
+        $items = self::getImpactTypes();
+        return Dropdown::showFromArray($name, $items, $options);
     }
 }

@@ -40,7 +40,9 @@
     {{ __('Take care of the expected units before setting an impact.', 'carbon') }}
 </div>
 
-{% for key, field_description in criterias %}
+{{ fields.dropdownArrayField('impact_criteria', '', impact_types, '') }}
+
+{% for key, field_description in criteria %}
     {% set criteria = key %}
     {% set criteria_source = key ~ '_source' %}
     {% set criteria_quality = key ~ '_quality' %}

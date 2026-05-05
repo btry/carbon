@@ -36,6 +36,7 @@ use CommonDBChild;
 use CommonDBTM;
 use CommonGLPI;
 use Glpi\Application\View\TemplateRenderer;
+use GlpiPlugin\Carbon\DataTracking\AbstractTracked;
 use GlpiPlugin\Carbon\DataTracking\TrackedInt;
 use GlpiPlugin\Carbon\Impact\Type;
 use Session;
@@ -132,7 +133,11 @@ class AbstractModel extends CommonDBChild
         $this->initForm($this->getID(), $options);
 
         $criteria = [];
+        $criteria_dropdown_items = [];
         foreach (Type::getImpactTypes() as $type_id => $type) {
+            if ($this->fields[$type . '_quality'] != AbstractTracked::DATA_QUALITY_UNSET_VALUE) {
+                continue;
+            }
             $unit = '(' . str_replace(' ', '&nbsp;', implode(' ', Type::getImpactUnit($type))) . ')';
 
             $criteria[$type] = [
@@ -141,13 +146,18 @@ class AbstractModel extends CommonDBChild
                 'icon'  => Type::getCriteriaIcon($type),
                 'unit'  => $unit,
             ];
+
+            $criteria_dropdown_items[$type] = $criteria[$type]['title'];
         }
 
         $template = strtolower(basename(str_replace('\\', '/', static::class))) . '.html.twig';
         TemplateRenderer::getInstance()->display('@carbon/' . $template, [
-            'params'    => $options,
-            'item'      => $this,
-            'criterias' => $criteria,
+            'params'                  => $options,
+            'item'                    => $this,
+            'criteria'                => $criteria,
+            'criteria_dropdown_items' => $criteria_dropdown_items,
+
+            'impact_types'            => $criteria_dropdown_items,
         ]);
     }
 
