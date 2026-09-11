@@ -75,11 +75,8 @@ class RestApiClient implements RestApiClientInterface
             $response = $request->request($method, $uri, $options);
         } catch (RequestException $e) {
             $cleaned_request = new Request(
-                $e->getRequest()->getMethod(),
-                $e->getRequest()->getUri(),
-                [],
-                $request->getBody(),
-                $request->getProtocolVersion()
+                $$method,
+                $uri
             );
             $this->last_error = [
                 'title'     => "Plugins API error",
