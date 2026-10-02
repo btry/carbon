@@ -35,6 +35,9 @@ namespace GlpiPlugin\Carbon\DataSource\CarbonIntensity\ElectricityMaps;
 use GlpiPlugin\Carbon\Config as PluginConfig;
 use GlpiPlugin\Carbon\DataSource\ConfigInterface;
 use Override;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class Config implements ConfigInterface
 {
@@ -104,5 +107,10 @@ TWIG;
     public static function getConfigurationValue(string $name)
     {
         return PluginConfig::getPluginConfigurationValue($name);
+    }
+
+    public function handleActionButton(Request $request): Response
+    {
+        throw new BadRequestHttpException('Bad request');
     }
 }

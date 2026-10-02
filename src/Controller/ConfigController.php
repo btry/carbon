@@ -33,9 +33,12 @@
 namespace GlpiPlugin\Carbon\Controller;
 
 use Glpi\Controller\AbstractController;
+use Glpi\Exception\Http\BadRequestHttpException;
 use Glpi\Exception\RedirectException;
 use Glpi\Http\Firewall;
 use Glpi\Security\Attribute\SecurityStrategy;
+use Html;
+use Session;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -45,11 +48,36 @@ final class ConfigController extends AbstractController
     #[SecurityStrategy(Firewall::STRATEGY_AUTHENTICATED)]
     #[Route(
         path: 'front/config.form.php',
-        name: 'idmefv2_config',
-        methods: ['GET', 'POST']
+        name: 'redirect from plugin wrench button',
+        methods: ['GET']
     )]
-    public function alert(Request $request): Response
+    public function redirect(Request $request): Response
     {
         throw new RedirectException('../../../front/config.form.php?forcetab=GlpiPlugin%5CCarbon%5CConfig$1');
+    }
+
+    #[SecurityStrategy(Firewall::STRATEGY_AUTHENTICATED)]
+    #[Route(
+        path: 'front/config.form.php',
+        name: 'action button from data sources configuration',
+        methods: ['POST']
+    )]
+    public function actionButton(Request $request): Response
+    {
+        if (!$request->request->has('datasource')) {
+            throw new BadRequestHttpException('Bad request');
+        }
+
+        // $datasource contains a namespace fragment
+        // example : Lca\Boavizta
+        //         : CarbonIntensity\Rte
+        $datasource = $request->request->get('datasource');
+        $classname = "GlpiPlugin\\Carbon\\DataSource\\$datasource\\Config";
+        if (!is_a($classname, 'GlpiPlugin\\Carbon\\DataSource\\ConfigInterface', true)) {
+            Session::addMessageAfterRedirect(__('Connection failed.', 'carbon'));
+            Html::back();
+        }
+
+        return (new $classname())->handleActionButton($request);
     }
 }

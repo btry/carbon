@@ -34,6 +34,9 @@ namespace GlpiPlugin\Carbon\DataSource\CarbonIntensity\Rte;
 
 use GlpiPlugin\Carbon\DataSource\ConfigInterface;
 use Override;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class Config implements ConfigInterface
 {
@@ -53,5 +56,10 @@ class Config implements ConfigInterface
     public function configUpdate(array $input): array
     {
         return $input;
+    }
+
+    public function handleActionButton(Request $request): Response
+    {
+        throw new BadRequestHttpException('Bad request');
     }
 }

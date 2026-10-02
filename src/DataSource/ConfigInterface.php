@@ -32,6 +32,12 @@
 
 namespace GlpiPlugin\Carbon\DataSource;
 
+use Glpi\Exception\RedirectException;
+use Glpi\Exception\Http\BadRequestHttpException;
+use Glpi\Exception\Http\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
 interface ConfigInterface
 {
     /**
@@ -44,4 +50,15 @@ interface ConfigInterface
     public function getConfigTemplate(): string;
 
     public function configUpdate(array $input): array;
+
+    /**
+     * Handle action button click for the config page
+     *
+     * @param Request $request
+     * @return Response
+     * @throws RedirectException
+     * @throws BadRequestHttpException
+     * @throws NotFoundHttpException
+     */
+    public function handleActionButton(Request $request): Response;
 }

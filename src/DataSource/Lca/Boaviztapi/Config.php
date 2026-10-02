@@ -33,12 +33,16 @@
 namespace GlpiPlugin\Carbon\DataSource\Lca\Boaviztapi;
 
 use Exception;
+use Glpi\Exception\Http\BadRequestHttpException;
 use GlpiPlugin\Carbon\Config as PluginConfig;
 use GlpiPlugin\Carbon\DataSource\ConfigInterface;
 use GlpiPlugin\Carbon\DataSource\RestApiClient;
+use Html;
 use Override;
 use Safe\Exceptions\UrlException;
 use Session;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 use function Safe\parse_url;
 
@@ -65,7 +69,7 @@ class Config implements ConfigInterface
             'fas fa-gears'
         ) }}
 
-            <a target="_blank" href="$commercial_url" ><i class="fa-solid fa-globe"></i>&nbsp;About</a>
+        <a target="_blank" href="$commercial_url" ><i class="fa-solid fa-globe"></i>&nbsp;About</a>
 
 TWIG;
         if (!$hide_boaviztapi_base_url) {
@@ -79,9 +83,21 @@ TWIG;
                 current_config['boaviztapi_base_url'],
                 __('Base URL to the Boaviztapi instance', 'carbon')
             ) }}
+
+            <a class="btn btn-primary" onclick="submitGetLink('/plugins/carbon/front/config.form.php', {datasource: 'Lca\\\\Boaviztapi', test: ''})">
+                {{ __('Test connection', 'carbon') }}
+            </a>
+
+            <a class="btn btn-primary" onclick="submitGetLink('/plugins/carbon/front/config.form.php', {datasource: 'Lca\\\\Boaviztapi', get_zones: ''})">
+                {{ __('Import zones', 'carbon') }}
+            </a>
 TWIG;
         }
         $twig .= <<<TWIG
+        {{ fields.smallTitle(
+            __('Geocofing', 'carbon'),
+        ) }}
+
         <div>
             <p>{{ __('Geocoding converts a location into a ISO 3166 (3 letters) country code. Boavizta needs this to determine usage impacts of assets. This feature sends the address stored in a location to nominatim.org service. If this is an issue, you can disable it below, and fill the coutry code manually.', 'carbon') }}</p>
         </div>
@@ -164,5 +180,61 @@ TWIG;
         }
 
         return PluginConfig::getPluginConfigurationValue($name);
+    }
+
+    public function handleActionButton(Request $request): Response
+    {
+        switch (true) {
+            case $request->request->has('test'):
+                return $this->testConnection($request);
+            case $request->request->has('get_zones'):
+                return $this->downloadZones($request);
+        }
+        throw new BadRequestHttpException('Bad request');
+    }
+
+    protected function downloadZones(Request $request): Response
+    {
+        $base_url = self::getConfigurationValue('boaviztapi_base_url');
+        if (!$this->validateBaseUrl($base_url)) {
+            Session::addMessageAfterRedirect(__('Invalid URL.', 'carbon'));
+            Html::back();
+        }
+
+        $boavizta = new Client(new RestApiClient(), $base_url);
+        try {
+            $zones = $boavizta->queryZones();
+        } catch (Exception $e) {
+            Session::addMessageAfterRedirect(__('Connection failed.', 'carbon'));
+            Html::back();
+        }
+        if (count($zones) > 0) {
+            // Save zones into database
+            $boavizta->saveZones($zones);
+            Session::addMessageAfterRedirect(__('Boavizta zones downloaded successfully.', 'carbon'));
+            Html::back();
+        } else {
+            Session::addMessageAfterRedirect(__('Boavizta zones download failed.', 'carbon'));
+            Html::back();
+        }
+    }
+
+    protected function testConnection(Request $request): Response
+    {
+        $base_url = self::getConfigurationValue('boaviztapi_base_url');
+        if (!$this->validateBaseUrl($base_url)) {
+            Session::addMessageAfterRedirect(__('Invalid URL.', 'carbon'));
+            Html::back();
+        }
+
+        $boavizta = new Client(new RestApiClient(), $base_url);
+        try {
+            $version = $boavizta->queryVersion();
+        } catch (Exception $e) {
+            Session::addMessageAfterRedirect(__('Connection failed.', 'carbon'));
+            Html::back();
+        }
+        Session::addMessageAfterRedirect(__('Connection succeeded.', 'carbon'));
+        Html::back();
     }
 }
